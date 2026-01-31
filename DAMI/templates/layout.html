@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dami CRM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  </head>
+  <body>
+    <div class="page">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand__icon">D</div>
+          <div>
+            <h1>Dami CRM</h1>
+            <p>Automação com carinho</p>
+          </div>
+        </div>
+        <div class="profile-card">
+          <h2>Olá, Dami ✨</h2>
+          <p>Seu painel exclusivo para cuidar das suas clientes.</p>
+          <div class="stats">
+            <div>
+              <span>{{ stats.total_clients }}</span>
+              <small>clientes</small>
+            </div>
+            <div>
+              <span>{{ stats.pending_tasks }}</span>
+              <small>ações</small>
+            </div>
+            <div>
+              <span>{{ stats.birthdays_today }}</span>
+              <small>aniversários</small>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar__note">
+          <p>
+            Dica: deixe o WhatsApp Web aberto ao usar o modo <strong>pywhatkit</strong> para
+            garantir os envios.
+          </p>
+        </div>
+      </aside>
+      <main class="content">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  </body>
+</html>
