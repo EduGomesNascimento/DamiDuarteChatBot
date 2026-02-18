@@ -108,8 +108,23 @@ body {
   width: 100%;
   height: 230px;
   object-fit: cover;
+  object-position: center;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-aen img {
+  object-position: top center;
+}
+
+.card-tecnicalc img {
+  object-position: top center;
+}
+
+.card-erp img {
+  object-fit: contain;
+  object-position: center;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .card h2 {

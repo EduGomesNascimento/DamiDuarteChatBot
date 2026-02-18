@@ -2,12 +2,13 @@
   const VIDEO_SRC = "./Gatinho_Pendurado_na_Borda_Preta.mp4";
   const FREEZE_TIME = 7.0;
   const SCROLL_SLOP = 0.02;
-  const SEEK_FPS = 75;
-  const SMOOTH_RESPONSE = 9;
+  const SEEK_FPS = 42;
+  const SMOOTH_RESPONSE = 9.2;
   const VIDEO_SCALE = 0.86;
-  const BLACK_BAND_START = 0.71;
-  const MIN_TIME_STEP = 1 / 40;
-  const END_LOCK_THRESHOLD = 0.06;
+  const BLACK_BAND_START_AT_BEGIN = 0.88;
+  const BLACK_BAND_START_AT_END = 0.72;
+  const MIN_TIME_STEP = 1 / 45;
+  const END_LOCK_SCROLL = 0.995;
 
   const intro = document.getElementById("intro");
   const canvas = document.getElementById("heroCanvas");
@@ -34,6 +35,10 @@
     return Math.max(a, Math.min(b, n));
   }
 
+  function lerp(a, b, t) {
+    return a + (b - a) * t;
+  }
+
   function setReadyState(isReady) {
     document.body.classList.toggle("site-ready", isReady);
   }
@@ -55,9 +60,9 @@
     const ih = video.videoHeight;
 
     const bg = ctx.createLinearGradient(0, 0, 0, ch);
-    bg.addColorStop(0, "#d0d0d0");
+    bg.addColorStop(0, "#cdcdcd");
     bg.addColorStop(0.5, "#c7c7c7");
-    bg.addColorStop(1, "#bdbdbd");
+    bg.addColorStop(1, "#c2c2c2");
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, cw, ch);
 
@@ -70,8 +75,11 @@
 
     ctx.drawImage(video, dx, dy, sw, sh);
 
-    // Extend the video black strip to full width for a continuous look.
-    const bandY = dy + sh * BLACK_BAND_START;
+    // Make the black bar rise with video progress and extend it to full width.
+    const progress = clamp(video.currentTime / FREEZE_TIME, 0, 1);
+    const rise = Math.pow(progress, 0.62);
+    const barStartRatio = lerp(BLACK_BAND_START_AT_BEGIN, BLACK_BAND_START_AT_END, rise);
+    const bandY = Math.floor(dy + sh * barStartRatio) - 1;
     if (bandY < ch) {
       ctx.fillStyle = "#000";
       ctx.fillRect(0, Math.max(0, bandY), cw, ch - Math.max(0, bandY));
@@ -110,9 +118,9 @@
 
   function updateTargetFromScroll() {
     const p = getPageProgress();
-    const eased = 1 - Math.pow(1 - p, 1.25);
+    const eased = 1 - Math.pow(1 - p, 1.35);
     const mapped = clamp(eased * FREEZE_TIME, 0, FREEZE_TIME);
-    targetTime = mapped >= FREEZE_TIME - END_LOCK_THRESHOLD ? FREEZE_TIME : mapped;
+    targetTime = p >= END_LOCK_SCROLL ? FREEZE_TIME : mapped;
   }
 
   function loop(nowMs) {

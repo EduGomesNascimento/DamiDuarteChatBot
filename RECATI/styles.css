@@ -118,7 +118,7 @@ body {
 .intro {
   height: 460vh;
   position: relative;
-  background: radial-gradient(circle at 50% 35%, #d0d0d0 0%, #c7c7c7 55%, #bdbdbd 100%);
+  background: linear-gradient(180deg, #cdcdcd 0%, #c7c7c7 55%, #c2c2c2 100%);
 }
 
 .sticky {
@@ -126,7 +126,7 @@ body {
   top: 0;
   height: 100vh;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 35%, #d0d0d0 0%, #c7c7c7 55%, #bdbdbd 100%);
+  background: linear-gradient(180deg, #cdcdcd 0%, #c7c7c7 55%, #c2c2c2 100%);
 }
 
 .sticky::after {
@@ -273,6 +273,30 @@ h3 {
   border-top: 1px solid var(--border);
 }
 
+.help-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.help-item {
+  margin: 0;
+  padding: 14px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  color: #d7dce2;
+  line-height: 1.45;
+  transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+}
+
+.help-item:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.26);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.28);
+}
+
 .highlight-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -374,6 +398,10 @@ h3 {
 
 @media (max-width: 860px) {
   .highlight-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .help-grid {
     grid-template-columns: 1fr;
   }
 }
