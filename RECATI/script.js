@@ -2,11 +2,12 @@
   const VIDEO_SRC = "./Gatinho_Pendurado_na_Borda_Preta.mp4";
   const FREEZE_TIME = 7.0;
   const SCROLL_SLOP = 0.02;
-  const SEEK_FPS = 72;
-  const SMOOTH_RESPONSE = 11;
+  const SEEK_FPS = 75;
+  const SMOOTH_RESPONSE = 9;
   const VIDEO_SCALE = 0.86;
-  const BLACK_BAND_START = 0.74;
-  const MIN_TIME_STEP = 1 / 45;
+  const BLACK_BAND_START = 0.71;
+  const MIN_TIME_STEP = 1 / 40;
+  const END_LOCK_THRESHOLD = 0.06;
 
   const intro = document.getElementById("intro");
   const canvas = document.getElementById("heroCanvas");
@@ -109,7 +110,9 @@
 
   function updateTargetFromScroll() {
     const p = getPageProgress();
-    targetTime = clamp(p * FREEZE_TIME, 0, FREEZE_TIME);
+    const eased = 1 - Math.pow(1 - p, 1.25);
+    const mapped = clamp(eased * FREEZE_TIME, 0, FREEZE_TIME);
+    targetTime = mapped >= FREEZE_TIME - END_LOCK_THRESHOLD ? FREEZE_TIME : mapped;
   }
 
   function loop(nowMs) {
@@ -122,6 +125,9 @@
       // Exponential smoothing for a fluid scrub in both directions.
       const alpha = 1 - Math.exp(-SMOOTH_RESPONSE * dt);
       smoothTime += (targetTime - smoothTime) * alpha;
+      if (targetTime === FREEZE_TIME && Math.abs(FREEZE_TIME - smoothTime) < 0.01) {
+        smoothTime = FREEZE_TIME;
+      }
 
       setReadyState(smoothTime >= FREEZE_TIME - SCROLL_SLOP);
       seekToTime(smoothTime, nowMs);

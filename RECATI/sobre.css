@@ -48,9 +48,13 @@ body {
   color: var(--muted);
   text-decoration: none;
   margin-left: 14px;
+  transition: color 0.28s ease, transform 0.28s ease;
 }
 
-.topbar nav a:hover { color: var(--text); }
+.topbar nav a:hover {
+  color: var(--text);
+  transform: translateY(-1px);
+}
 
 .sobre-page {
   max-width: 1180px;
@@ -84,9 +88,15 @@ body {
   border-radius: 18px;
   background: linear-gradient(180deg, var(--surface) 0%, rgba(0, 0, 0, 0.35) 100%);
   padding: 16px;
-  transform: translateY(8px);
+  transform: translateY(16px);
+  opacity: 0;
+  animation: cardIn 0.7s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
   transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
+
+.grid .card:nth-child(1) { animation-delay: 0.1s; }
+.grid .card:nth-child(2) { animation-delay: 0.2s; }
+.grid .card:nth-child(3) { animation-delay: 0.3s; }
 
 .card:hover {
   transform: translateY(0);
@@ -136,6 +146,18 @@ body {
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.09));
 }
 
+.page-footer {
+  margin-top: 34px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.page-footer p {
+  margin: 6px 0;
+}
+
 .pop-in {
   animation: popIn 0.55s cubic-bezier(0.2, 0.9, 0.2, 1) both;
 }
@@ -148,6 +170,17 @@ body {
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
