@@ -1,0 +1,13 @@
+<svg width="520" height="160" viewBox="0 0 520 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="520" height="160" fill="transparent"/>
+  <g transform="translate(16,20)">
+    <circle cx="44" cy="44" r="43" stroke="#5A3E2B" stroke-width="2" fill="#F4EFE6"/>
+    <path d="M44 17C35.7 17 29 23.7 29 32V42.4C29 49.1 32.2 55.4 37.6 59.3L44 63.9L50.4 59.3C55.8 55.4 59 49.1 59 42.4V32C59 23.7 52.3 17 44 17Z" fill="#5A3E2B"/>
+    <path d="M38.6 72H49.4V81.2C49.4 86.2 45.4 90.2 40.4 90.2H38.6V72Z" fill="#E7D8C5"/>
+    <path d="M44 30.4C40.4 30.4 37.5 33.3 37.5 36.9C37.5 40.5 40.4 43.4 44 43.4C47.6 43.4 50.5 40.5 50.5 36.9C50.5 33.3 47.6 30.4 44 30.4ZM44 40.5C42 40.5 40.4 38.9 40.4 36.9C40.4 34.9 42 33.3 44 33.3C46 33.3 47.6 34.9 47.6 36.9C47.6 38.9 46 40.5 44 40.5Z" fill="#F4EFE6"/>
+  </g>
+  <g transform="translate(116,48)">
+    <text x="0" y="30" fill="#3B2A1F" font-family="Georgia, serif" font-size="38" letter-spacing="0.5">Brambatti</text>
+    <text x="2" y="62" fill="#5A3E2B" font-family="'Trebuchet MS', sans-serif" font-size="17" letter-spacing="4">ODONTOLOGIA</text>
+  </g>
+</svg>
