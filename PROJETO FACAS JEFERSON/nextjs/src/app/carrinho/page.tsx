@@ -17,8 +17,8 @@ export default function CartPage() {
       <div className="min-h-screen pt-32 pb-16 flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-4">🛒</div>
-          <h1 className="font-display text-3xl font-black text-white mb-3">Seu carrinho está vazio</h1>
-          <p className="text-gray-500 mb-6">Explore nossos produtos e encontre sua próxima faca artesanal.</p>
+          <h1 className="font-display text-3xl font-black text-primary mb-3">Seu carrinho está vazio</h1>
+          <p className="text-secondary mb-6">Explore nossos produtos e encontre sua próxima faca artesanal.</p>
           <Link href="/categoria/todos" className="btn-primary">Ver Catálogo →</Link>
         </div>
       </div>
@@ -28,7 +28,7 @@ export default function CartPage() {
   return (
     <div className="min-h-screen pt-32 pb-16 px-4">
       <div className="max-w-screen-xl mx-auto">
-        <h1 className="font-display text-3xl font-black text-white mb-8">🛒 Meu Carrinho</h1>
+        <h1 className="font-display text-3xl font-black text-primary mb-8">🛒 Meu Carrinho</h1>
 
         <div className="grid lg:grid-cols-12 gap-8">
           {/* Items */}
@@ -39,17 +39,17 @@ export default function CartPage() {
                   <Image src={product.image} alt={product.name} fill className="object-contain p-2" sizes="96px" />
                 </Link>
                 <div className="flex-1 min-w-0">
-                  <Link href={`/produto/${product.id}`} className="text-sm font-semibold text-white hover:text-brand-red transition-colors line-clamp-2">
+                  <Link href={`/produto/${product.id}`} className="text-sm font-semibold text-primary hover:text-brand-red transition-colors line-clamp-2">
                     {product.name}
                   </Link>
-                  <div className="text-xs text-gray-500 mt-1">{product.categoryName} — SKU: {product.sku}</div>
+                  <div className="text-xs text-secondary mt-1">{product.categoryName} — SKU: {product.sku}</div>
                   <div className="flex items-center gap-4 mt-3">
                     <div className="flex items-center border border-border rounded">
-                      <button onClick={() => updateQty(product.id, qty - 1)} className="px-2.5 py-1 text-white hover:bg-bg-card text-sm">−</button>
-                      <span className="px-3 py-1 text-white font-bold text-sm">{qty}</span>
-                      <button onClick={() => updateQty(product.id, qty + 1)} className="px-2.5 py-1 text-white hover:bg-bg-card text-sm">+</button>
+                      <button onClick={() => updateQty(product.id, qty - 1)} className="px-2.5 py-1 text-primary hover:bg-bg-card text-sm">−</button>
+                      <span className="px-3 py-1 text-primary font-bold text-sm">{qty}</span>
+                      <button onClick={() => updateQty(product.id, qty + 1)} className="px-2.5 py-1 text-primary hover:bg-bg-card text-sm">+</button>
                     </div>
-                    <button onClick={() => removeItem(product.id)} className="text-xs text-gray-500 hover:text-brand-red transition-colors">Remover</button>
+                    <button onClick={() => removeItem(product.id)} className="text-xs text-secondary hover:text-brand-red transition-colors">Remover</button>
                   </div>
                 </div>
                 <div className="text-right">
@@ -65,31 +65,31 @@ export default function CartPage() {
           {/* Summary */}
           <div className="lg:col-span-4">
             <div className="card-dark p-6 sticky top-28">
-              <h2 className="text-lg font-bold text-white mb-4 pb-3 border-b border-border">Resumo</h2>
+              <h2 className="text-lg font-bold text-primary mb-4 pb-3 border-b border-border">Resumo</h2>
 
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-gray-400">
+                <div className="flex justify-between text-secondary">
                   <span>Subtotal ({items.reduce((s, i) => s + i.qty, 0)} itens)</span>
-                  <span className="text-white">{formatBRL(subtotal)}</span>
+                  <span className="text-primary">{formatBRL(subtotal)}</span>
                 </div>
                 {savings > 0 && (
-                  <div className="flex justify-between text-green-400">
+                  <div className="flex justify-between text-brand-gold">
                     <span>Economia</span>
                     <span>-{formatBRL(savings)}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-gray-400">
+                <div className="flex justify-between text-secondary">
                   <span>Frete</span>
-                  <span className={freight === 0 ? 'text-green-400 font-semibold' : 'text-white'}>
+                  <span className={freight === 0 ? 'text-brand-gold font-semibold' : 'text-primary'}>
                     {freight === 0 ? 'GRÁTIS 🎉' : formatBRL(freight)}
                   </span>
                 </div>
                 {subtotal < FRETE_GRATIS_MIN && (
-                  <p className="text-xs text-gray-500 pt-1">
-                    Faltam <span className="text-white font-bold">{formatBRL(FRETE_GRATIS_MIN - subtotal)}</span> para frete grátis
+                  <p className="text-xs text-secondary pt-1">
+                    Faltam <span className="text-primary font-bold">{formatBRL(FRETE_GRATIS_MIN - subtotal)}</span> para frete grátis
                   </p>
                 )}
-                <div className="flex justify-between font-black text-lg text-white pt-3 border-t border-border">
+                <div className="flex justify-between font-black text-lg text-primary pt-3 border-t border-border">
                   <span>Total</span>
                   <span className="text-brand-red">{formatBRL(total)}</span>
                 </div>
@@ -99,7 +99,7 @@ export default function CartPage() {
                 🔒 Finalizar Compra
               </Link>
 
-              <Link href="/categoria/todos" className="block text-center text-sm text-gray-500 hover:text-brand-red transition-colors mt-3">
+              <Link href="/categoria/todos" className="block text-center text-sm text-secondary hover:text-brand-red transition-colors mt-3">
                 ← Continuar Comprando
               </Link>
             </div>
