@@ -1,0 +1,155 @@
+/* ============================================================
+   THEME VARIABLES - Light & Dark Mode
+   ============================================================ */
+
+:root {
+  /* BACKGROUNDS */
+  --bg-primary: 0 0% 100%; /* Branco */
+  --bg-secondary: 0 0% 98%; /* Branco suave */
+  --bg-card: 0 0% 95%; /* Cinza muito claro */
+  --bg-card-hover: 0 0% 90%; /* Cinza claro */
+
+  /* TEXT */
+  --text-primary: 240 10% 10%; /* Cinza escuro/preto */
+  --text-secondary: 240 5% 40%; /* Cinza médio */
+  --text-tertiary: 240 5% 60%; /* Cinza claro */
+
+  /* BORDERS & ACCENTS */
+  --border: 240 5% 85%; /* Cinza claro */
+  --border-light: 240 10% 95%; /* Cinza muito claro */
+
+  /* BRAND */
+  --brand-red: 1 100% 39%; /* Vermelho */
+  --brand-red-dark: 1 100% 32%; /* Vermelho escuro */
+  --brand-gold: 42 64% 55%; /* Ouro */
+  --brand-gold-light: 42 60% 60%; /* Ouro claro */
+
+  /* OVERLAYS */
+  --overlay: 0 0% 0% / 10%; /* Preto 10% */
+  --overlay-dark: 0 0% 0% / 30%; /* Preto 30% */
+
+  /* SMOOTH TRANSITION */
+  color-scheme: light;
+}
+
+html.dark {
+  /* BACKGROUNDS */
+  --bg-primary: 0 0% 3%; /* Quase preto */
+  --bg-secondary: 0 0% 7%; /* Cinza muito escuro */
+  --bg-card: 0 0% 11%; /* Cinza escuro */
+  --bg-card-hover: 0 0% 15%; /* Cinza mais claro */
+
+  /* TEXT */
+  --text-primary: 0 0% 98%; /* Branco */
+  --text-secondary: 0 0% 80%; /* Cinza claro */
+  --text-tertiary: 0 0% 60%; /* Cinza médio */
+
+  /* BORDERS & ACCENTS */
+  --border: 0 0% 18%; /* Cinza escuro */
+  --border-light: 0 0% 25%; /* Cinza mais claro */
+
+  /* BRAND (mais vibrante em dark) */
+  --brand-red: 0 100% 50%; /* Vermelho vibrante */
+  --brand-red-dark: 0 100% 42%; /* Vermelho mais escuro */
+  --brand-gold: 42 65% 60%; /* Ouro mais brilhante */
+  --brand-gold-light: 42 65% 68%; /* Ouro ainda mais claro */
+
+  /* OVERLAYS */
+  --overlay: 255 255 255 / 5%; /* Branco 5% */
+  --overlay-dark: 0 0% 0% / 30%; /* Preto 30% */
+
+  /* SMOOTH TRANSITION */
+  color-scheme: dark;
+}
+
+/* ============================================================
+   APLICAR VARIÁVEIS GLOBALMENTE
+   ============================================================ */
+
+html,
+body {
+  background-color: hsl(var(--bg-primary));
+  color: hsl(var(--text-primary));
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ============================================================
+   SCROLLBAR THEME
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--bg-secondary));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--brand-red));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--brand-red-dark));
+}
+
+/* ============================================================
+   SELECTION
+   ============================================================ */
+
+::selection {
+  background: hsla(var(--brand-red) / 40%);
+  color: hsl(var(--text-primary));
+}
+
+/* ============================================================
+   FOCUS STATES
+   ============================================================ */
+
+:focus-visible {
+  outline: 2px solid hsl(var(--brand-red));
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   INPUT STYLES
+   ============================================================ */
+
+input,
+textarea,
+select {
+  background-color: hsl(var(--bg-secondary));
+  color: hsl(var(--text-primary));
+  border-color: hsl(var(--border));
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: hsl(var(--brand-red));
+  background-color: hsl(var(--bg-card));
+}
+
+/* ============================================================
+   PLACEHOLDER
+   ============================================================ */
+
+::placeholder {
+  color: hsl(var(--text-secondary));
+}
+
+/* ============================================================
+   LINKS
+   ============================================================ */
+
+a {
+  color: hsl(var(--brand-red));
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: hsl(var(--brand-red-dark));
+}
