@@ -102,7 +102,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   value={formData.name}
                   onChange={e => setFormData({ ...formData, name: e.target.value })}
                   className="form-input"
-                  placeholder="Seu nome"
+                  placeholder="Seu nome completo"
                 />
               </div>
 
