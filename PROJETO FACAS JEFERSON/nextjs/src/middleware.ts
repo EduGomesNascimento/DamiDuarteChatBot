@@ -32,14 +32,12 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    // Verificar se é admin
-    const { data: profile } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', user.id)
-      .single();
+    // Verificar se é admin por email (mais rápido, sem query DB)
+    const ADMIN_EMAIL = 'cutelariajeferson@gmail.com';
+    const isAdminByEmail = user.email === ADMIN_EMAIL;
 
-    if (profile?.role !== 'admin') {
+    // Se não é admin por email, redirecionar para home
+    if (!isAdminByEmail) {
       return NextResponse.redirect(new URL('/', request.url));
     }
   }

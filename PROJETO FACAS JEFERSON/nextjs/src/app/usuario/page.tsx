@@ -17,11 +17,14 @@ interface UserProfile {
   created_at: string;
 }
 
+const ADMIN_EMAIL = 'cutelariajeferson@gmail.com';
+
 export default function UsuarioPage() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState<UserProfile | null>(null);
+  const [activatingAdmin, setActivatingAdmin] = useState(false);
   const router = useRouter();
   const supabase = createClient();
 
@@ -80,6 +83,25 @@ export default function UsuarioPage() {
       toast.error(err.message || 'Erro ao atualizar perfil');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleActivateAdmin = async () => {
+    setActivatingAdmin(true);
+    try {
+      const response = await fetch('/api/admin/activate', { method: 'POST' });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao ativar admin');
+      }
+
+      toast.success('Modo admin ativado! Redirecionando...');
+      setTimeout(() => router.push('/admin'), 1500);
+    } catch (err: any) {
+      toast.error(err.message || 'Erro ao ativar admin');
+    } finally {
+      setActivatingAdmin(false);
     }
   };
 
@@ -266,6 +288,15 @@ export default function UsuarioPage() {
           </Link>
 
           <Link
+            href="/usuario/enderecos"
+            className="bg-bg-secondary border border-border rounded-lg p-6 hover:border-brand-red transition-colors text-center"
+          >
+            <div className="text-3xl mb-2">🏠</div>
+            <h3 className="font-bold text-primary">Meus Endereços</h3>
+            <p className="text-sm text-secondary">Gerenciar endereços</p>
+          </Link>
+
+          <Link
             href="/"
             className="bg-bg-secondary border border-border rounded-lg p-6 hover:border-brand-red transition-colors text-center"
           >
@@ -273,6 +304,18 @@ export default function UsuarioPage() {
             <h3 className="font-bold text-primary">Continuar Comprando</h3>
             <p className="text-sm text-secondary">Voltar à loja</p>
           </Link>
+
+          {user.email === ADMIN_EMAIL && (
+            <button
+              onClick={handleActivateAdmin}
+              disabled={activatingAdmin}
+              className="bg-gradient-to-br from-brand-red to-brand-red-dark border border-brand-red rounded-lg p-6 hover:shadow-lg transition-all text-center disabled:opacity-50"
+            >
+              <div className="text-3xl mb-2">👑</div>
+              <h3 className="font-bold text-white">Modo Administrador</h3>
+              <p className="text-sm text-white/80">{activatingAdmin ? 'Ativando...' : 'Acessar painel'}</p>
+            </button>
+          )}
         </div>
       </div>
     </div>
