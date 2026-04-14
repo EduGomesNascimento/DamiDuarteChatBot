@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import ProductCard from '@/components/ui/ProductCard';
+import ShippingCalculator from '@/components/ui/ShippingCalculator';
 import { getProductById, getRelatedProducts, formatBRL, calcDiscount } from '@/data/products';
 import { cn } from '@/lib/utils';
 import { installmentText } from '@/lib/utils';
@@ -175,6 +176,11 @@ export default function ProductPage() {
             <Link href="/checkout" className="btn-outline w-full justify-center text-center block py-3">
               Comprar Agora →
             </Link>
+
+            {/* Shipping Calculator */}
+            <div className="mt-6">
+              <ShippingCalculator weight={product.specs?.Peso ? parseFloat(product.specs.Peso) : 0.5} price={product.price} />
+            </div>
 
             {/* Trust */}
             <div className="mt-6 flex flex-wrap gap-4 text-xs text-secondary">
