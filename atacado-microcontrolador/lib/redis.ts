@@ -74,7 +74,20 @@ const globalForRedis = globalThis as unknown as {
 function createClient(): KVStore {
   if (process.env.REDIS_URL) {
     try {
-      return new Redis(process.env.REDIS_URL) as unknown as KVStore
+      const client = new Redis(process.env.REDIS_URL, {
+        lazyConnect: true,
+        maxRetriesPerRequest: 1,
+        retryStrategy: (times) => (times > 3 ? null : Math.min(times * 200, 1000)),
+      })
+      // Evita "Unhandled error event" quando o Redis está indisponível.
+      let avisou = false
+      client.on('error', () => {
+        if (!avisou) {
+          avisou = true
+          console.warn('[redis] indisponível — verifique REDIS_URL ou suba o serviço')
+        }
+      })
+      return client as unknown as KVStore
     } catch {
       console.warn('[redis] falha ao conectar, usando store em memória')
     }
