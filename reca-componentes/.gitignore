@@ -1,0 +1,14 @@
+/node_modules
+/.next
+/out
+/build
+.env
+.env*.local
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+/prisma/migrations/dev.db*
+
+# uploads locais de imagens (dev) — manter a pasta, ignorar o conteúdo
+/public/uploads/*
+!/public/uploads/.gitkeep
