@@ -54,9 +54,9 @@ export async function criarPreferencia(params: {
         installments: 12,
       },
       back_urls: {
-        success: `${process.env.NEXT_PUBLIC_APP_URL}/minha-conta/pedidos`,
-        pending: `${process.env.NEXT_PUBLIC_APP_URL}/minha-conta/pedidos`,
-        failure: `${process.env.NEXT_PUBLIC_APP_URL}/checkout`,
+        success: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/retorno?pedido=${params.externalReference}`,
+        pending: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/retorno?pedido=${params.externalReference}`,
+        failure: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/retorno?pedido=${params.externalReference}`,
       },
       auto_return: 'approved',
       notification_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/pagamentos/webhook`,

@@ -75,8 +75,20 @@ O projeto roda mesmo sem todas as integrações configuradas:
 - **Sem `MP_ACCESS_TOKEN`** → o checkout usa um **fluxo mock** em
   `/checkout/mock` que simula PIX, Boleto e Cartão, com botões para simular
   pagamento aprovado / pendente / recusado (substitui o webhook real do MP).
+- **Sem `S3_*`** → o upload de imagens do admin salva em `/public/uploads`
+  (local). Com `S3_*` + `S3_PUBLIC_URL` preenchidos, envia para Cloudflare R2 / S3.
 
 Isso permite demonstrar o fluxo de ponta a ponta antes de plugar as chaves reais.
+
+### Pagamento (Mercado Pago) em produção
+
+1. Preencha `MP_ACCESS_TOKEN`, `MP_PUBLIC_KEY` e `MP_WEBHOOK_SECRET`.
+2. O checkout cria a preferência e redireciona ao **Checkout Pro** (cartão,
+   PIX, boleto). Ao voltar, o cliente cai em **`/checkout/retorno`**, que faz
+   *polling* em `/api/pedidos/[numero]/status` e mostra o status ao vivo.
+3. O **webhook** `POST /api/pagamentos/webhook` valida a assinatura
+   HMAC-SHA256, consulta o pagamento e atualiza o pedido (aprovado, pendente,
+   recusado, estornado) — repondo estoque quando cancelado/estornado.
 
 ---
 

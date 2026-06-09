@@ -42,11 +42,11 @@
 - [ ] Configurar credenciais reais do Mercado Pago (`MP_ACCESS_TOKEN`, `MP_PUBLIC_KEY`, `MP_WEBHOOK_SECRET`)
 - [ ] Testar PIX real (QR + copia-e-cola) e boleto (PDF) em produção
 - [ ] Parcelamento real no cartão (juros vindos do MP) em vez do cálculo simulado
-- [ ] Tela de retorno pós-pagamento com status ao vivo (polling em `/api/pedidos/[id]/status`)
+- [x] Tela de retorno pós-pagamento com status ao vivo (`/checkout/retorno`, polling em `/api/pedidos/[numero]/status`)
 
 ### Fotos dos produtos
 - [ ] Substituir placeholders por **fotos reais** dos componentes (upload pelo admin)
-- [ ] Upload direto para **Cloudflare R2 / S3** (hoje salva em `/public/uploads` — trocar `app/api/admin/upload`)
+- [x] Upload direto para **Cloudflare R2 / S3** (`lib/storage.ts`) com fallback local automático
 - [ ] Compressão/resize automático e geração de thumbnail
 
 ### Catálogo & Conteúdo

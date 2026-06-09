@@ -3,6 +3,7 @@ import { writeFile, mkdir } from 'fs/promises'
 import { join } from 'path'
 import { randomBytes } from 'crypto'
 import { ok, erro, exigirAdmin } from '@/lib/api'
+import { storageConfigured, uploadToStorage } from '@/lib/storage'
 
 export const runtime = 'nodejs'
 
@@ -17,8 +18,8 @@ const TIPOS: Record<string, string> = {
 /**
  * Upload de imagem de produto (admin).
  *
- * Sem S3/R2 configurado, salva em /public/uploads e devolve a URL pública.
- * Para produção, troque a gravação local por upload ao bucket (S3_*).
+ * Com S3/R2 configurado (S3_*), envia ao bucket e devolve a URL pública.
+ * Sem isso, salva em /public/uploads como fallback de desenvolvimento.
  */
 export async function POST(req: NextRequest) {
   try {
@@ -37,10 +38,21 @@ export async function POST(req: NextRequest) {
   if (file.size > 5 * 1024 * 1024) return erro('Imagem acima de 5MB', 400)
 
   const bytes = Buffer.from(await file.arrayBuffer())
+  const nome = `${Date.now()}-${randomBytes(4).toString('hex')}.${ext}`
+
+  // Produção: bucket R2/S3
+  if (storageConfigured) {
+    try {
+      const url = await uploadToStorage(bytes, `produtos/${nome}`, file.type)
+      return ok({ url, storage: 's3' })
+    } catch (e) {
+      console.error('[upload] falha no S3, usando local:', e)
+    }
+  }
+
+  // Fallback dev: disco local
   const dir = join(process.cwd(), 'public', 'uploads')
   await mkdir(dir, { recursive: true })
-  const nome = `${Date.now()}-${randomBytes(4).toString('hex')}.${ext}`
   await writeFile(join(dir, nome), bytes)
-
-  return ok({ url: `/uploads/${nome}` })
+  return ok({ url: `/uploads/${nome}`, storage: 'local' })
 }

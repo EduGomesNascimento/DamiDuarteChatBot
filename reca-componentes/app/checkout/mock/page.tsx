@@ -32,7 +32,7 @@ function MockInner() {
       if (resultado === 'aprovado') toast('Pagamento aprovado! 🎉', 'success')
       else if (resultado === 'pendente') toast('Pagamento pendente', 'info')
       else toast('Pagamento recusado', 'error')
-      router.push('/minha-conta/pedidos')
+      router.push(`/checkout/retorno?pedido=${encodeURIComponent(numero)}`)
     } catch {
       toast('Erro ao processar pagamento', 'error')
     } finally {
