@@ -91,7 +91,7 @@ export function ProductCard({ produto }: { produto: ProdutoDTO }) {
                 onClick={add}
                 disabled={semEstoque}
                 aria-label="Adicionar ao carrinho"
-                className="rounded-xl bg-primary/15 text-primary px-3 py-2 text-sm font-semibold transition-all hover:bg-primary hover:text-primary-fg hover:shadow-glow disabled:opacity-40 disabled:hover:bg-primary/15 disabled:hover:text-primary"
+                className="rounded-xl bg-accent/15 text-accent px-3 py-2 text-sm font-semibold transition-all hover:bg-accent hover:text-accent-fg hover:shadow-glow-accent disabled:opacity-40 disabled:hover:bg-accent/15 disabled:hover:text-accent"
               >
                 {semEstoque ? '—' : '+ Carrinho'}
               </button>

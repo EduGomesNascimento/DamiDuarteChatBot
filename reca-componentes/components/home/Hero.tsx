@@ -78,7 +78,7 @@ function Particles() {
         if (p.y < 0 || p.y > h) p.vy *= -1
         ctx!.beginPath()
         ctx!.arc(p.x, p.y, 1.5, 0, Math.PI * 2)
-        ctx!.fillStyle = 'rgba(0,212,255,0.6)'
+        ctx!.fillStyle = 'rgba(56,211,245,0.6)'
         ctx!.fill()
       }
       for (let i = 0; i < pts.length; i++) {
@@ -90,7 +90,7 @@ function Particles() {
             ctx!.beginPath()
             ctx!.moveTo(pts[i].x, pts[i].y)
             ctx!.lineTo(pts[j].x, pts[j].y)
-            ctx!.strokeStyle = `rgba(0,212,255,${0.12 * (1 - dist / 120)})`
+            ctx!.strokeStyle = `rgba(56,211,245,${0.12 * (1 - dist / 120)})`
             ctx!.stroke()
           }
         }

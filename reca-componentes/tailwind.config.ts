@@ -1,5 +1,8 @@
 import type { Config } from 'tailwindcss'
 
+// Cores via CSS variables (canais RGB) — permitem tema dark/light e ajuste fácil.
+const c = (v: string) => `rgb(var(${v}) / <alpha-value>)`
+
 const config: Config = {
   darkMode: 'class',
   content: [
@@ -10,21 +13,26 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: '#0A0E1A',
-        surface: '#111827',
-        'surface-2': '#1A2336',
+        bg: c('--c-bg'),
+        surface: c('--c-surface'),
+        'surface-2': c('--c-surface2'),
+        line: c('--c-line'),
         primary: {
-          DEFAULT: '#00D4FF',
-          fg: '#001018',
+          DEFAULT: c('--c-primary'),
+          fg: c('--c-primary-fg'),
         },
         secondary: {
-          DEFAULT: '#7C3AED',
+          DEFAULT: c('--c-secondary'),
         },
-        success: '#10B981',
-        warning: '#F59E0B',
-        danger: '#EF4444',
-        'text-primary': '#F9FAFB',
-        'text-secondary': '#9CA3AF',
+        accent: {
+          DEFAULT: c('--c-accent'),
+          fg: c('--c-accent-fg'),
+        },
+        success: c('--c-success'),
+        warning: c('--c-warning'),
+        danger: c('--c-danger'),
+        'text-primary': c('--c-text'),
+        'text-secondary': c('--c-text2'),
       },
       fontFamily: {
         display: ['var(--font-display)', 'sans-serif'],
@@ -32,9 +40,11 @@ const config: Config = {
         mono: ['var(--font-mono)', 'monospace'],
       },
       boxShadow: {
-        glow: '0 0 20px rgba(0,212,255,0.3)',
-        'glow-lg': '0 0 32px rgba(0,212,255,0.45)',
-        'glow-violet': '0 0 20px rgba(124,58,237,0.35)',
+        glow: '0 0 22px rgb(var(--c-primary) / 0.28)',
+        'glow-lg': '0 0 36px rgb(var(--c-primary) / 0.4)',
+        'glow-accent': '0 8px 24px rgb(var(--c-accent) / 0.35)',
+        'glow-violet': '0 0 22px rgb(var(--c-secondary) / 0.35)',
+        card: '0 4px 18px rgb(0 0 0 / 0.25)',
       },
       keyframes: {
         'fade-up': {
