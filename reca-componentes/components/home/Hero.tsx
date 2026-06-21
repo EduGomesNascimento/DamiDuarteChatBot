@@ -11,7 +11,7 @@ const FRASES = [
 ]
 
 function useTyping(frases: string[]) {
-  const [texto, setTexto] = useState('')
+  const [texto, setTexto] = useState(frases[0])
   const [idx, setIdx] = useState(0)
 
   useEffect(() => {

@@ -16,8 +16,9 @@ export function Footer() {
             <span className="font-display font-bold">{storeName}</span>
           </div>
           <p className="mt-4 text-sm text-text-secondary">
-            Microcontroladores, SBCs e componentes para makers, estudantes e engenheiros.
-            Especificações honestas, entrega rápida no RS.
+            Componentes eletrônicos para makers, estudantes e engenheiros — de
+            microcontroladores e sensores a resistores, CIs, ferramentas e
+            instrumentação. Especificações honestas e preço de quem compra direto.
           </p>
         </div>
 
