@@ -709,8 +709,8 @@ function VerificarContent() {
           width: 100%;
         }
         .input-field:focus {
-          border-color: #00D4FF;
-          box-shadow: 0 0 20px rgba(0,212,255,0.3);
+          border-color: rgb(var(--c-primary));
+          box-shadow: 0 0 20px rgb(var(--c-primary) / 0.3);
         }
         .input-field::placeholder {
           color: rgba(156,163,175,0.5);

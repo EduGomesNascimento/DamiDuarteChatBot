@@ -1,6 +1,7 @@
 import { comAuth, ok, erro } from '@/lib/api'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
+import { emailPedidoEnviado } from '@/lib/resend'
 
 interface RouteParams {
   params: { id: string }
@@ -39,6 +40,14 @@ export async function PATCH(request: Request, { params }: RouteParams) {
         itens: true,
       },
     })
+
+    if (parsed.data.status === 'ENVIADO' && existing.status !== 'ENVIADO') {
+      try {
+        await emailPedidoEnviado(pedido.usuario.email, pedido.numero, pedido.rastreamento ?? 'em breve')
+      } catch (mailErr) {
+        console.error('[admin/pedidos] falha ao enviar e-mail de envio:', mailErr)
+      }
+    }
 
     return ok(pedido)
   }, { admin: true })

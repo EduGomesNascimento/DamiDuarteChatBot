@@ -2,6 +2,8 @@ import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { Prisma } from '@prisma/client'
 import { ok, erro, comAuth } from '@/lib/api'
+import { emailConfirmacaoPedido } from '@/lib/resend'
+import { formatBRL } from '@/lib/utils'
 import type { AuthPayload } from '@/lib/auth'
 
 export async function POST(req: NextRequest) {
@@ -71,6 +73,14 @@ export async function POST(req: NextRequest) {
         },
       })
     })
+
+    if (statusPedido === 'PAGAMENTO_CONFIRMADO') {
+      try {
+        await emailConfirmacaoPedido(user.email, numero, formatBRL(Number(pedido.total)))
+      } catch (mailErr) {
+        console.error('[mock-confirmar] falha ao enviar e-mail:', mailErr)
+      }
+    }
 
     return ok({ ok: true, status: statusPedido, mpId })
   })

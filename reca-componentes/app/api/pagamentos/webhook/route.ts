@@ -6,6 +6,8 @@ import {
   consultarPagamento,
   mapStatusMP,
 } from '@/lib/mercadopago'
+import { emailConfirmacaoPedido } from '@/lib/resend'
+import { formatBRL } from '@/lib/utils'
 
 // MP requires a 200 response quickly even on errors
 function resp200() {
@@ -56,7 +58,7 @@ export async function POST(req: NextRequest) {
 
     const pedido = await prisma.pedido.findFirst({
       where: { numero: externalRef },
-      include: { itens: true },
+      include: { itens: true, usuario: { select: { email: true } } },
     })
 
     if (!pedido) {
@@ -109,6 +111,19 @@ export async function POST(req: NextRequest) {
         },
       })
     })
+
+    // E-mail de confirmação ao aprovar (apenas na transição)
+    if (statusPagamento === 'APROVADO' && pedido.status !== 'PAGAMENTO_CONFIRMADO') {
+      try {
+        await emailConfirmacaoPedido(
+          pedido.usuario.email,
+          pedido.numero,
+          formatBRL(Number(pedido.total))
+        )
+      } catch (mailErr) {
+        console.error('[webhook] falha ao enviar e-mail de confirmação:', mailErr)
+      }
+    }
 
     return resp200()
   } catch (e) {

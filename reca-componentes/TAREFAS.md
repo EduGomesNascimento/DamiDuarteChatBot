@@ -57,7 +57,7 @@
 ### Operação
 - [ ] Integração real de frete (Correios/Melhor Envio) — estrutura já pronta em `lib/shipping.ts`
 - [ ] Emissão de NF-e (integrar emissor)
-- [ ] E-mails transacionais com Resend em produção (`RESEND_API_KEY`)
+- [x] E-mails transacionais ligados ao fluxo (confirmação ao pagar, enviado ao despachar, voltou-ao-estoque) — falta só `RESEND_API_KEY` em produção
 - [ ] Migration do banco em produção: `npx prisma migrate deploy`
 
 ### Infra / Deploy

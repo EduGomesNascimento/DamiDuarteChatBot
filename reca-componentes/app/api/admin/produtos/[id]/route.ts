@@ -4,6 +4,7 @@ import { produtoSchema } from '@/lib/validations'
 import { slugify } from '@/lib/utils'
 import { Prisma } from '@prisma/client'
 import { z } from 'zod'
+import { emailAvisoEstoque } from '@/lib/resend'
 
 interface RouteParams {
   params: { id: string }
@@ -75,6 +76,22 @@ export async function PUT(request: Request, { params }: RouteParams) {
       },
       include: { categoria: true, tags: { include: { tag: true } } },
     })
+
+    // Voltou ao estoque (0 -> >0): avisa quem pediu e limpa a lista
+    if (existing.estoque <= 0 && data.estoque > 0) {
+      try {
+        const avisos = await prisma.avisoEstoque.findMany({ where: { produtoId: id } })
+        const base = process.env.NEXT_PUBLIC_APP_URL || ''
+        await Promise.all(
+          avisos.map((a) =>
+            emailAvisoEstoque(a.email, produto.nome, `${base}/produto/${produto.slug}`)
+          )
+        )
+        if (avisos.length) await prisma.avisoEstoque.deleteMany({ where: { produtoId: id } })
+      } catch (mailErr) {
+        console.error('[admin/produtos] falha ao avisar estoque:', mailErr)
+      }
+    }
 
     return ok(produto)
   }, { admin: true })
