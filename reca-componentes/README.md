@@ -26,6 +26,15 @@ muita animação.
 
 ## 🚀 Setup
 
+### Windows — 1 clique 🪟
+
+Tendo **Node.js 18+** e **Docker Desktop** (aberto), dê **duplo-clique** em
+**`iniciar-loja.bat`**. Ele cria o `.env`, instala dependências, sobe
+PostgreSQL+Redis, roda as migrations, popula os 173 produtos, sobe o servidor e
+**abre `http://localhost:3000` no navegador**. Para parar: `parar-loja.bat`.
+
+### Manual (qualquer SO)
+
 ```bash
 # 1. Instalar dependências
 npm install
