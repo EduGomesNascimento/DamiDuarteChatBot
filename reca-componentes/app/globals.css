@@ -1,0 +1,295 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Temas — canais RGB em CSS variables (dark = padrão, light = .light)
+   Paleta "Deep Circuit": slate-navy profundo (sem preto puro),
+   ciano como acento de marca, verde-esmeralda nos CTAs (conversão),
+   violeta como secundário. Contraste calibrado para WCAG AA.
+   ============================================================ */
+:root,
+.dark {
+  color-scheme: dark;
+  --c-bg: 13 19 32;          /* #0D1320 deep slate-navy */
+  --c-surface: 22 31 48;     /* #161F30 cards */
+  --c-surface2: 33 44 64;    /* #212C40 inputs / elevado */
+  --c-line: 148 163 184;     /* base para bordas (alpha baixo) */
+  --c-primary: 56 211 245;   /* #38D3F5 ciano (marca / UI) */
+  --c-primary-fg: 4 18 26;
+  --c-secondary: 167 139 250;/* #A78BFA violeta */
+  --c-accent: 34 197 94;     /* #22C55E verde CTA (comprar) */
+  --c-accent-fg: 4 22 11;
+  --c-success: 52 211 153;   /* #34D399 */
+  --c-warning: 251 191 36;   /* #FBBF24 */
+  --c-danger: 248 113 113;   /* #F87171 */
+  --c-text: 241 245 249;     /* #F1F5F9 */
+  --c-text2: 160 176 196;    /* #A0B0C4 (passa AA em #0D1320) */
+}
+
+.light {
+  color-scheme: light;
+  --c-bg: 243 246 251;       /* #F3F6FB slate bem claro */
+  --c-surface: 255 255 255;  /* cards brancos */
+  --c-surface2: 236 241 248; /* #ECF1F8 */
+  --c-line: 100 116 139;     /* bordas slate */
+  --c-primary: 14 116 144;   /* #0E7490 ciano escuro (contraste no claro) */
+  --c-primary-fg: 255 255 255;
+  --c-secondary: 124 58 237; /* #7C3AED */
+  --c-accent: 22 163 74;     /* #16A34A verde CTA */
+  --c-accent-fg: 255 255 255;
+  --c-success: 22 163 74;
+  --c-warning: 180 83 9;     /* #B45309 */
+  --c-danger: 220 38 38;     /* #DC2626 */
+  --c-text: 15 23 42;        /* #0F172A */
+  --c-text2: 71 85 105;      /* #475569 */
+}
+
+@layer base {
+  body {
+    @apply bg-bg text-text-primary font-sans antialiased;
+  }
+  ::selection {
+    background: rgb(var(--c-primary) / 0.3);
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgb(var(--c-bg));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--c-surface2));
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--c-primary) / 0.5);
+  }
+}
+
+@layer components {
+  .surface-card {
+    @apply rounded-2xl;
+    background: rgb(var(--c-surface));
+    border: 1px solid rgb(var(--c-line) / 0.14);
+    box-shadow: 0 1px 0 rgb(255 255 255 / 0.03) inset;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  }
+  .light .surface-card {
+    box-shadow: 0 2px 10px rgb(15 23 42 / 0.06);
+  }
+
+  /* Borda com gradiente animado nos cards principais */
+  .gradient-border {
+    position: relative;
+    background: rgb(var(--c-surface));
+    border-radius: 1rem;
+  }
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(
+      120deg,
+      rgb(var(--c-primary)),
+      rgb(var(--c-secondary)),
+      rgb(var(--c-accent))
+    );
+    background-size: 200% 200%;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: glow-border 4s ease infinite;
+    pointer-events: none;
+  }
+
+  /* CTA principal = verde-esmeralda (conversão) com ripple via JS */
+  .btn-primary {
+    @apply relative overflow-hidden inline-flex items-center justify-center gap-2
+      font-semibold rounded-xl px-5 py-3
+      transition-all duration-200 active:scale-[0.98]
+      disabled:opacity-50 disabled:cursor-not-allowed;
+    color: rgb(var(--c-accent-fg));
+    background-image: linear-gradient(
+      135deg,
+      rgb(var(--c-accent)) 0%,
+      rgb(var(--c-accent) / 0.85) 55%,
+      rgb(var(--c-primary)) 160%
+    );
+    box-shadow: 0 6px 18px rgb(var(--c-accent) / 0.32);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 10px 26px rgb(var(--c-accent) / 0.45);
+    filter: brightness(1.06);
+  }
+
+  /* Botão de marca (ciano) — para ações neutras/secundárias de destaque */
+  .btn-brand {
+    @apply relative overflow-hidden inline-flex items-center justify-center gap-2
+      font-semibold rounded-xl px-5 py-3 transition-all duration-200 active:scale-[0.98]
+      disabled:opacity-50 disabled:cursor-not-allowed;
+    color: rgb(var(--c-primary-fg));
+    background-image: linear-gradient(135deg, rgb(var(--c-primary)) 0%, rgb(var(--c-primary) / 0.82) 100%);
+    box-shadow: 0 6px 18px rgb(var(--c-primary) / 0.3);
+  }
+  .btn-brand:hover {
+    filter: brightness(1.06);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-medium
+      transition-all duration-200;
+    color: rgb(var(--c-text));
+    border: 1px solid rgb(var(--c-line) / 0.22);
+  }
+  .btn-ghost:hover {
+    border-color: rgb(var(--c-primary) / 0.6);
+    color: rgb(var(--c-primary));
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium font-mono;
+  }
+}
+
+@layer utilities {
+  /* Fundo com trilhas de PCB — sutil, segue o tema */
+  .pcb-bg {
+    background-color: rgb(var(--c-bg));
+    background-image:
+      linear-gradient(rgb(var(--c-primary) / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--c-primary) / 0.05) 1px, transparent 1px),
+      radial-gradient(circle at 18% 25%, rgb(var(--c-secondary) / 0.10), transparent 42%),
+      radial-gradient(circle at 82% 72%, rgb(var(--c-primary) / 0.10), transparent 42%);
+    background-size: 42px 42px, 42px 42px, 100% 100%, 100% 100%;
+  }
+  .light .pcb-bg {
+    background-image:
+      linear-gradient(rgb(var(--c-primary) / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--c-primary) / 0.06) 1px, transparent 1px),
+      radial-gradient(circle at 18% 25%, rgb(var(--c-secondary) / 0.06), transparent 45%),
+      radial-gradient(circle at 82% 72%, rgb(var(--c-primary) / 0.07), transparent 45%);
+  }
+
+  /* Grid blueprint do hero */
+  .blueprint-grid {
+    background-image:
+      linear-gradient(rgb(var(--c-primary) / 0.10) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--c-primary) / 0.10) 1px, transparent 1px);
+    background-size: 34px 34px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 75%);
+  }
+
+  /* Scanlines CRT (sutil) */
+  .scanlines::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0) 0px,
+      rgb(0 0 0 / 0) 2px,
+      rgb(0 0 0 / 0.08) 3px,
+      rgb(0 0 0 / 0) 4px
+    );
+    mix-blend-mode: overlay;
+  }
+
+  /* Tilt 3D nos cards */
+  .tilt {
+    transform-style: preserve-3d;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .tilt:hover {
+    transform: perspective(900px) rotateX(3deg) rotateY(-3deg) translateY(-6px);
+    box-shadow: 0 12px 30px rgb(var(--c-primary) / 0.22);
+    border-color: rgb(var(--c-primary) / 0.4);
+  }
+
+  /* Shimmer skeleton */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: rgb(var(--c-surface2));
+  }
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.08), transparent);
+    animation: shimmer 1.5s infinite;
+  }
+
+  .glitch:hover {
+    animation: glitch 0.4s steps(2) infinite;
+  }
+  @keyframes glitch {
+    0% { text-shadow: 2px 0 rgb(var(--c-primary)), -2px 0 rgb(var(--c-secondary)); }
+    50% { text-shadow: -2px 0 rgb(var(--c-primary)), 2px 0 rgb(var(--c-danger)); }
+    100% { text-shadow: 2px 0 rgb(var(--c-secondary)), -2px 0 rgb(var(--c-primary)); }
+  }
+
+  .text-glow {
+    text-shadow: 0 0 16px rgb(var(--c-primary) / 0.45);
+  }
+  .light .text-glow {
+    text-shadow: none;
+  }
+
+  .text-gradient {
+    background: linear-gradient(120deg, rgb(var(--c-primary)), rgb(var(--c-secondary)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  @keyframes ripple {
+    to {
+      width: 320px;
+      height: 320px;
+      opacity: 0;
+    }
+  }
+
+  .typing-cursor::after {
+    content: '▋';
+    color: rgb(var(--c-primary));
+    animation: blink 1s step-end infinite;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Foco acessível consistente */
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgb(var(--c-primary) / 0.35);
+    border-color: rgb(var(--c-primary) / 0.6);
+  }
+  img {
+    -webkit-user-drag: none;
+  }
+
+  /* No tema claro, recolore bordas/realces "white/x" para não sumirem no branco */
+  .light [class*='border-white'] {
+    border-color: rgb(15 23 42 / 0.10) !important;
+  }
+  .light [class*='bg-white/5'],
+  .light [class*='bg-white/2'] {
+    background-color: rgb(15 23 42 / 0.04) !important;
+  }
+}
