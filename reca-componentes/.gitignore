@@ -12,3 +12,6 @@ next-env.d.ts
 # uploads locais de imagens (dev) — manter a pasta, ignorar o conteúdo
 /public/uploads/*
 !/public/uploads/.gitkeep
+
+# banco PostgreSQL embutido (local, sem docker)
+/.pgdata-local/
