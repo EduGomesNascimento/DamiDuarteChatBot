@@ -28,10 +28,14 @@ muita animação.
 
 ### Windows — 1 clique 🪟
 
-Tendo **Node.js 18+** e **Docker Desktop** (aberto), dê **duplo-clique** em
-**`iniciar-loja.bat`**. Ele cria o `.env`, instala dependências, sobe
-PostgreSQL+Redis, roda as migrations, popula os 173 produtos, sobe o servidor e
-**abre `http://localhost:3000` no navegador**. Para parar: `parar-loja.bat`.
+**Sem Docker (recomendado)** — só precisa do **Node.js 18+**. Dê **duplo-clique**
+em **`iniciar-loja-sem-docker.bat`**. Ele usa um **PostgreSQL embutido**
+(portátil, sem instalar nada) + cache em memória, roda migrations, popula os 173
+produtos, sobe o servidor e **abre `http://localhost:3000`**. Encerrar: feche as
+janelas "BANCO" e "SERVIDOR".
+
+**Com Docker** — tendo **Docker Desktop** aberto, use **`iniciar-loja.bat`**
+(sobe PostgreSQL+Redis em containers). Para parar: `parar-loja.bat`.
 
 ### Manual (qualquer SO)
 
