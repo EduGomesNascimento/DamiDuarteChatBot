@@ -31,6 +31,12 @@ export default function CarrinhoPage() {
   const [cupomAplicado, setCupomAplicado] = useState<CupomAplicado | null>(null)
   const [carregandoCupom, setCarregandoCupom] = useState(false)
 
+  type OpFrete = { id: string; nome: string; prazoDias: number; valor: number }
+  const [cep, setCep] = useState('')
+  const [freteOpcoes, setFreteOpcoes] = useState<OpFrete[] | null>(null)
+  const [freteSel, setFreteSel] = useState<OpFrete | null>(null)
+  const [loadingFrete, setLoadingFrete] = useState(false)
+
   // Restore coupon from session storage
   useEffect(() => {
     try {
@@ -51,7 +57,33 @@ export default function CarrinhoPage() {
   )
   const descontoVolume = subtotalCheio - subtotalComVolume
   const descontoCupom = cupomAplicado?.desconto ?? 0
-  const total = Math.max(0, subtotalComVolume - descontoCupom)
+  const freteValor = freteSel?.valor ?? 0
+  const total = Math.max(0, subtotalComVolume - descontoCupom + freteValor)
+
+  async function calcularFreteCarrinho() {
+    const cepDigits = cep.replace(/\D/g, '')
+    if (cepDigits.length !== 8) {
+      toast('Informe um CEP válido (8 dígitos).', 'error')
+      return
+    }
+    setLoadingFrete(true)
+    setFreteOpcoes(null)
+    try {
+      const res = await fetch('/api/frete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cep: cepDigits, pesoGramas: 300 }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.erro || 'Erro')
+      setFreteOpcoes(data.opcoes as OpFrete[])
+      setFreteSel((data.opcoes as OpFrete[])[0] ?? null)
+    } catch (e) {
+      toast(e instanceof Error ? e.message : 'Erro ao calcular frete', 'error')
+    } finally {
+      setLoadingFrete(false)
+    }
+  }
 
   async function aplicarCupom() {
     const codigo = codigoCupom.trim().toUpperCase()
@@ -264,9 +296,58 @@ export default function CarrinhoPage() {
                     <span>-{formatBRL(cupomAplicado.desconto)}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-text-secondary">
-                  <span>Frete</span>
-                  <span className="text-warning text-xs font-medium">Calculado no checkout</span>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-text-secondary">
+                    <span>Frete</span>
+                    {freteSel ? (
+                      <span className="font-medium text-text-primary">
+                        {freteSel.valor === 0 ? 'Grátis' : formatBRL(freteSel.valor)}
+                      </span>
+                    ) : (
+                      <span className="text-xs">Calcule abaixo</span>
+                    )}
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      value={cep}
+                      onChange={(e) => setCep(e.target.value.replace(/\D/g, '').slice(0, 8))}
+                      onKeyDown={(e) => e.key === 'Enter' && calcularFreteCarrinho()}
+                      placeholder="Seu CEP"
+                      inputMode="numeric"
+                      className="flex-1 rounded-lg border border-line bg-surface-2 px-3 py-2 text-sm text-text-primary focus:outline-none"
+                    />
+                    <Button
+                      variant="ghost"
+                      onClick={calcularFreteCarrinho}
+                      disabled={loadingFrete}
+                      className="text-sm px-3 py-2"
+                    >
+                      {loadingFrete ? '...' : 'Calcular'}
+                    </Button>
+                  </div>
+                  {freteOpcoes && (
+                    <div className="space-y-1">
+                      {freteOpcoes.map((o) => (
+                        <label
+                          key={o.id}
+                          className="flex cursor-pointer items-center justify-between gap-2 rounded-lg border border-line px-3 py-2 text-sm"
+                        >
+                          <span className="flex items-center gap-2">
+                            <input
+                              type="radio"
+                              name="frete-cart"
+                              checked={freteSel?.id === o.id}
+                              onChange={() => setFreteSel(o)}
+                            />
+                            <span>
+                              {o.nome} <span className="text-text-secondary">· {o.prazoDias} dia(s)</span>
+                            </span>
+                          </span>
+                          <span className="font-medium">{o.valor === 0 ? 'Grátis' : formatBRL(o.valor)}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
 

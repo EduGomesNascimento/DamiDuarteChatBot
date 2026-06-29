@@ -13,6 +13,7 @@ import {
 } from '@/lib/auth'
 import { redis } from '@/lib/redis'
 import { otpVerifySchema } from '@/lib/validations'
+import { roleForEmail } from '@/lib/admin'
 
 export async function POST(req: NextRequest) {
   try {
@@ -77,7 +78,8 @@ export async function POST(req: NextRequest) {
 
     if (usuario) {
       // Usuário existente — emitir tokens e autenticar
-      const payload = { sub: usuario.id, email: usuario.email, role: usuario.role }
+      const role = roleForEmail(usuario.email)
+      const payload = { sub: usuario.id, email: usuario.email, role }
       const access = await signAccessToken(payload)
       const refresh = await signRefreshToken(payload)
       const ua = req.headers.get('user-agent') ?? undefined
@@ -94,12 +96,12 @@ export async function POST(req: NextRequest) {
 
       await prisma.usuario.update({
         where: { id: usuario.id },
-        data: { emailVerificado: true },
+        data: { emailVerificado: true, role },
       })
 
       await setAuthCookies(access, refresh)
 
-      return ok({ autenticado: true, cadastroCompleto: true, role: usuario.role })
+      return ok({ autenticado: true, cadastroCompleto: true, role })
     } else {
       // Usuário não existe — marcar e-mail como verificado no redis para cadastro
       await redis.set(`otp:verified:${email}`, '1', 'EX', 900)

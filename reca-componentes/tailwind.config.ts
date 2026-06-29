@@ -17,6 +17,8 @@ const config: Config = {
         surface: c('--c-surface'),
         'surface-2': c('--c-surface2'),
         line: c('--c-line'),
+        header: c('--c-header'),
+        header2: c('--c-header2'),
         primary: {
           DEFAULT: c('--c-primary'),
           fg: c('--c-primary-fg'),
@@ -40,11 +42,11 @@ const config: Config = {
         mono: ['var(--font-mono)', 'monospace'],
       },
       boxShadow: {
-        glow: '0 0 22px rgb(var(--c-primary) / 0.28)',
-        'glow-lg': '0 0 36px rgb(var(--c-primary) / 0.4)',
-        'glow-accent': '0 8px 24px rgb(var(--c-accent) / 0.35)',
-        'glow-violet': '0 0 22px rgb(var(--c-secondary) / 0.35)',
-        card: '0 4px 18px rgb(0 0 0 / 0.25)',
+        glow: '0 1px 3px rgb(0 0 0 / 0.12)',
+        'glow-lg': '0 4px 10px rgb(0 0 0 / 0.14)',
+        'glow-accent': '0 2px 5px rgb(0 0 0 / 0.15)',
+        'glow-violet': '0 1px 3px rgb(0 0 0 / 0.12)',
+        card: '0 1px 3px rgb(0 0 0 / 0.1)',
       },
       keyframes: {
         'fade-up': {

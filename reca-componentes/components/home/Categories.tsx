@@ -23,26 +23,25 @@ const ICONS: Record<string, string> = {
 }
 
 export function Categories({ categorias }: { categorias: CategoriaDTO[] }) {
+  if (categorias.length === 0) return null
   return (
-    <section className="mx-auto max-w-7xl px-4 py-14">
-      <Reveal className="mb-8">
-        <h2 className="font-display text-2xl font-bold sm:text-3xl">Navegue por categoria</h2>
-        <p className="mt-1 text-text-secondary">Componentes eletrônicos organizados pra você achar rápido.</p>
+    <section className="mx-auto max-w-7xl px-4 pt-6">
+      <Reveal className="mb-3">
+        <h2 className="text-lg font-bold text-text-primary">Navegue por categoria</h2>
       </Reveal>
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-        {categorias.map((c, i) => (
-          <Reveal key={c.id} delay={i * 60}>
-            <Link
-              href={`/catalogo?categoria=${c.slug}`}
-              className="tilt surface-card flex h-full flex-col items-center gap-3 p-6 text-center transition-colors hover:border-primary/40"
-            >
-              <span className="text-4xl">{ICONS[c.slug] || '🔧'}</span>
-              <span className="font-display font-semibold">{c.nome}</span>
-              <span className="font-mono text-xs text-text-secondary">
-                {c.totalProdutos ?? 0} itens
-              </span>
-            </Link>
-          </Reveal>
+      <div className="flex gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-4 sm:overflow-visible lg:grid-cols-8">
+        {categorias.map((c) => (
+          <Link
+            key={c.id}
+            href={`/catalogo?categoria=${c.slug}`}
+            className="surface-card flex shrink-0 flex-col items-center gap-2 p-4 text-center w-28 sm:w-auto"
+          >
+            <span className="text-2xl">{ICONS[c.slug] || '🔧'}</span>
+            <span className="text-xs font-semibold text-text-primary leading-tight">{c.nome}</span>
+            <span className="text-[11px] text-text-secondary">
+              {c.totalProdutos ?? 0} itens
+            </span>
+          </Link>
         ))}
       </div>
     </section>

@@ -11,6 +11,7 @@ import {
 import { redis } from '@/lib/redis'
 import { ipDaRequest } from '@/lib/rate-limit'
 import { cadastroSchema } from '@/lib/validations'
+import { roleForEmail } from '@/lib/admin'
 
 export async function POST(req: NextRequest) {
   try {
@@ -52,6 +53,7 @@ export async function POST(req: NextRequest) {
         telefone,
         dataNasc: new Date(dataNasc),
         emailVerificado: true,
+        role: roleForEmail(email),
         enderecos: {
           create: {
             apelido: endereco.apelido,
@@ -84,6 +86,7 @@ export async function POST(req: NextRequest) {
 
     // Emitir tokens
     const payload = { sub: novoUsuario.id, email: novoUsuario.email, role: novoUsuario.role }
+    const role = novoUsuario.role
     const access = await signAccessToken(payload)
     const refresh = await signRefreshToken(payload)
 
@@ -102,7 +105,7 @@ export async function POST(req: NextRequest) {
     // Remover marcador redis
     await redis.del(`otp:verified:${email}`)
 
-    return ok({ autenticado: true, role: 'CLIENTE' })
+    return ok({ autenticado: true, role })
   } catch (e: unknown) {
     console.error('[cadastro] erro:', e)
     // Prisma unique constraint

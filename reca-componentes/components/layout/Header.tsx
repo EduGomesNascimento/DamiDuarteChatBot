@@ -41,87 +41,109 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/5 bg-bg/80 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3">
-        <Link href="/" className="flex items-center gap-2 shrink-0">
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary/15 text-primary font-mono font-bold shadow-glow">
-            RC
-          </span>
-          <span className="glitch hidden font-display font-bold sm:block">{storeName}</span>
-        </Link>
+    <header className="sticky top-0 z-50">
+      {/* Linha principal — logo, busca, conta, carrinho */}
+      <div className="bg-header text-white">
+        <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-2.5">
+          <Link href="/" className="flex items-center gap-2 shrink-0">
+            <span className="grid h-9 w-9 place-items-center rounded bg-white/10 text-white font-bold">
+              RC
+            </span>
+            <span className="hidden font-bold leading-tight sm:block">{storeName}</span>
+          </Link>
 
-        <form onSubmit={onSearch} className="relative hidden flex-1 md:block">
+          <form onSubmit={onSearch} className="hidden flex-1 md:flex">
+            <input
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+              placeholder="Busque por nome, SKU, tag ou arquitetura…"
+              className="w-full rounded-l-md border-0 bg-white px-4 py-2 text-sm text-text-primary outline-none focus:ring-2 focus:ring-primary/50"
+            />
+            <button
+              type="submit"
+              aria-label="Buscar"
+              className="flex items-center justify-center rounded-r-md bg-accent px-4 text-text-primary transition-colors hover:bg-[#F7CA00]"
+            >
+              ⌕
+            </button>
+          </form>
+
+          <div className="ml-auto flex items-center gap-1 sm:gap-2">
+            <button
+              onClick={toggle}
+              aria-label="Alternar tema"
+              className="hidden h-9 w-9 place-items-center rounded text-white/80 transition-colors hover:bg-white/10 sm:grid"
+            >
+              {theme === 'dark' ? '☀' : '☾'}
+            </button>
+            <Link
+              href="/auth"
+              className="hidden flex-col rounded px-2 py-1.5 text-xs leading-tight text-white/90 transition-colors hover:bg-white/10 sm:flex"
+            >
+              <span>Olá, faça login</span>
+              <span className="font-bold">Minha conta</span>
+            </Link>
+            <Link
+              href="/minha-conta"
+              aria-label="Minha conta"
+              className="grid h-9 w-9 place-items-center rounded text-white/90 transition-colors hover:bg-white/10 sm:hidden"
+            >
+              ◉
+            </Link>
+            <Link
+              href="/carrinho"
+              className="relative flex items-center gap-1 rounded px-2 py-1.5 text-white/90 transition-colors hover:bg-white/10"
+              aria-label="Carrinho"
+            >
+              <span className="text-xl">🛒</span>
+              <span className="hidden text-sm font-bold sm:block">Carrinho</span>
+              {totalItens > 0 && (
+                <span
+                  className={cn(
+                    'absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-accent-fg',
+                    animateCart && 'animate-bounce-cart'
+                  )}
+                >
+                  {totalItens}
+                </span>
+              )}
+            </Link>
+            <button
+              onClick={() => setMenuOpen((o) => !o)}
+              className="grid h-9 w-9 place-items-center rounded text-white/90 lg:hidden"
+              aria-label="Menu"
+            >
+              ☰
+            </button>
+          </div>
+        </div>
+
+        {/* Busca mobile */}
+        <form onSubmit={onSearch} className="flex px-4 pb-2.5 md:hidden">
           <input
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
-            placeholder="Busque por nome, SKU, tag ou arquitetura…"
-            className="w-full rounded-xl border border-white/10 bg-surface px-4 py-2.5 pl-10 text-sm outline-none transition-colors focus:border-primary/60"
+            placeholder="Buscar…"
+            className="w-full rounded-l-md border-0 bg-white px-4 py-2 text-sm text-text-primary outline-none"
           />
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary">⌕</span>
+          <button
+            type="submit"
+            aria-label="Buscar"
+            className="flex items-center justify-center rounded-r-md bg-accent px-4 text-text-primary"
+          >
+            ⌕
+          </button>
         </form>
-
-        <nav className="hidden items-center gap-1 lg:flex">
-          {links.slice(0, 1).map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="rounded-lg px-3 py-2 text-sm text-text-secondary transition-colors hover:text-primary"
-            >
-              {l.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-2">
-          <button
-            onClick={toggle}
-            aria-label="Alternar tema"
-            className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 text-text-secondary transition-colors hover:text-primary"
-          >
-            {theme === 'dark' ? '☀' : '☾'}
-          </button>
-          <Link
-            href="/minha-conta"
-            aria-label="Minha conta"
-            className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 text-text-secondary transition-colors hover:text-primary"
-          >
-            ◉
-          </Link>
-          <Link
-            href="/carrinho"
-            className="relative grid h-9 w-9 place-items-center rounded-lg border border-white/10 text-text-secondary transition-colors hover:text-primary"
-            aria-label="Carrinho"
-          >
-            🛒
-            {totalItens > 0 && (
-              <span
-                className={cn(
-                  'absolute -right-1.5 -top-1.5 grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-fg',
-                  animateCart && 'animate-bounce-cart'
-                )}
-              >
-                {totalItens}
-              </span>
-            )}
-          </Link>
-          <button
-            onClick={() => setMenuOpen((o) => !o)}
-            className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 text-text-secondary lg:hidden"
-            aria-label="Menu"
-          >
-            ☰
-          </button>
-        </div>
       </div>
 
-      {/* Sub-nav de categorias (desktop) */}
-      <div className="hidden border-t border-white/5 lg:block">
-        <div className="mx-auto flex max-w-7xl items-center gap-1 px-4 py-2">
+      {/* Segunda linha — categorias */}
+      <div className="hidden bg-header2 lg:block">
+        <div className="mx-auto flex max-w-7xl items-center gap-1 px-4 py-1.5">
           {links.map((l) => (
             <Link
               key={l.label}
               href={l.href}
-              className="rounded-lg px-3 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:bg-white/5 hover:text-primary"
+              className="rounded px-2.5 py-1 text-xs font-medium text-gray-200 transition-colors hover:bg-white/10 hover:text-white"
             >
               {l.label}
             </Link>
@@ -131,22 +153,14 @@ export function Header() {
 
       {/* Menu mobile */}
       {menuOpen && (
-        <div className="border-t border-white/5 bg-surface px-4 py-3 lg:hidden">
-          <form onSubmit={onSearch} className="mb-3">
-            <input
-              value={busca}
-              onChange={(e) => setBusca(e.target.value)}
-              placeholder="Buscar…"
-              className="w-full rounded-xl border border-white/10 bg-bg px-4 py-2.5 text-sm outline-none focus:border-primary/60"
-            />
-          </form>
+        <div className="border-t border-line bg-surface px-4 py-3 lg:hidden">
           <div className="flex flex-col">
             {links.map((l) => (
               <Link
                 key={l.label}
                 href={l.href}
                 onClick={() => setMenuOpen(false)}
-                className="rounded-lg px-3 py-2.5 text-sm text-text-secondary hover:text-primary"
+                className="rounded px-3 py-2.5 text-sm text-text-secondary hover:text-primary"
               >
                 {l.label}
               </Link>
