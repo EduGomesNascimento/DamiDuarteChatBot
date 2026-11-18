@@ -1,19 +1,30 @@
-# DamiDuarteChatBot — área de rascunho (vários projetos)
+# DamiDuarteChatBot
 
-> **Atenção:** apesar do nome, este repositório **não é só o chatbot da Dami**.
-> Ele reúne versões de trabalho de vários projetos. Os repositórios oficiais
-> de cada um estão listados abaixo. Antes de editar algo aqui, confira se a
-> versão oficial já não está mais atualizada.
+Repositório com o **Dami CRM** e alguns projetos guardados que não têm
+repositório próprio.
 
 ## Conteúdo
 
-| Pasta | O que é | Repositório oficial |
-|---|---|---|
-| `DAMI/` | Dami CRM: CRM em Flask com automação de mensagens via WhatsApp | (só existe aqui) |
-| `reca-componentes/` | Loja RECA Componentes (Next.js + Prisma) | [Reca-Componentes](https://github.com/EduGomesNascimento/Reca-Componentes) |
-| `recati-pages/` | Página de redirecionamento de `recati.com.br` para a loja | [Recati](https://github.com/EduGomesNascimento/Recati) |
-| `arquivo/recati-site-antigo/` | Site antigo da RECATI, guardado como histórico | [Recati](https://github.com/EduGomesNascimento/Recati) |
-| `BrambattiOdontologia/brambatti-site/` | Site da Brambatti Odontologia | [Brambatti](https://github.com/EduGomesNascimento/Brambatti) |
-| `PROJETO FACAS JEFERSON/nextjs/` | Sistema da Cutelaria Jeferson (Next.js) | [cutelariajeferson](https://github.com/EduGomesNascimento/cutelariajeferson) (ainda vazio) |
+| Pasta | O que é |
+|---|---|
+| [`dami-crm/`](dami-crm/) | Dami CRM: CRM em Flask com automação de mensagens via WhatsApp. Veja o README da pasta para rodar. |
+| [`cutelaria-jeferson/`](cutelaria-jeferson/) | Loja da Cutelaria Jeferson (Next.js + Supabase + PagBank). Única cópia do código. |
+| [`recati/redirect-pages/`](recati/redirect-pages/) | Página estática para redirecionar `recati.com.br` para a loja RECA Componentes (não publicada) |
+| [`recati/site-antigo/`](recati/site-antigo/) | Site institucional antigo da RECATI, guardado como histórico |
 
-Cada pasta tem o próprio README ou LEIA-ME com instruções de uso.
+### Projetos que estavam aqui e agora vivem no próprio repositório
+
+| Projeto | Repositório |
+|---|---|
+| Loja RECA Componentes | [Reca-Componentes](https://github.com/EduGomesNascimento/Reca-Componentes) |
+| Site da Brambatti Odontologia | [Brambatti](https://github.com/EduGomesNascimento/Brambatti) |
+| Site atual da RECATI | [Recati](https://github.com/EduGomesNascimento/Recati) |
+
+As cópias antigas continuam acessíveis no histórico do git deste repositório.
+
+## Pendência conhecida
+
+`cutelaria-jeferson/nextjs/` não tem `package.json`, `tsconfig.json` nem
+`next.config.js`, e esses arquivos nunca foram versionados. Para rodar o
+projeto, é preciso recriá-los (Next.js com App Router, `@supabase/ssr` e
+Tailwind, conforme os imports em `src/`).
